@@ -18,7 +18,7 @@ end
 MQTT::Client.connect('mqtt://test.account:test.account@m01.mqtt.cloud.nifty.com:16030') do |c|
   # If you pass a block to the get method, then it will loop
   c.get('mbaas/test') do |topic,message|
-    @@client.post '/2013-09-01/classes/message', JSON.parse('{"message":' + message + '}')    
+    @@client.post '/2013-09-01/classes/message', JSON.parse(message)    
     puts "#{topic}: #{message}"
   end
 end
