@@ -20,7 +20,22 @@ puts url
 MQTT::Client.connect(url) do |c|
   # If you pass a block to the get method, then it will loop
   c.get(yaml['topic']) do |topic,message|
+    # Message backup
     @@client.post '/2013-09-01/classes/message', JSON.parse(message)    
     puts "#{topic}: #{message}"
+    @push = NCMB::Push.new
+    @push.immediateDeliveryFlag = true
+    @push.target = ['ios']
+    @push.message = "New message!"
+    searchCondition = {'channels' => {'$inArray' => [yaml['topic']]}}
+    puts searchCondition
+    @push.searchCondition = searchCondition
+    if @push.save
+      puts "Push save successful."
+    else
+      puts "Push save faild."
+    end
+    # send Push notificaiton
+
   end
 end
