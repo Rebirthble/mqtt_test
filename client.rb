@@ -23,6 +23,8 @@ MQTT::Client.connect(url) do |c|
     # Message backup
     @@client.post '/2013-09-01/classes/message', JSON.parse(message)    
     puts "#{topic}: #{message}"
+
+    # send Push notificaiton
     @push = NCMB::Push.new
     @push.immediateDeliveryFlag = true
     @push.target = ['ios']
@@ -35,7 +37,6 @@ MQTT::Client.connect(url) do |c|
     else
       puts "Push save faild."
     end
-    # send Push notificaiton
 
   end
 end
